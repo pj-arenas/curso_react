@@ -17,7 +17,7 @@ function App() {
 
 return(
   <>
-  <Seeker countries={countries} setcountries={setcountries} setResult={setResult} />
+  <Seeker countries={countries} setResult={setResult} />
   {result}
   </>
 )

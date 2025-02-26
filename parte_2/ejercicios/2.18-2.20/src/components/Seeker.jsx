@@ -1,27 +1,31 @@
 import restCountries from '../services/RestCountries'
 
-const Seeker = ({countries,setcountries,setResult})=>{
+const Seeker = ({countries,setResult})=>{
 
     const findCountry =(name)=>{
         restCountries.getName(name)
         .then((country)=>{
-            console.log(country)
+          restCountries.getWeather(country.data.latlng)
+          .then((weather)=>{
+            console.log(weather)
             setResult(
-                <>
-                <h1>{country.data.name.common}</h1>
-                <p>Capital {country.data.capital[0]} </p>
-                <p>Area {country.data.area}</p>
-                <h2>Languages</h2>
-                <ul>
-                {Object.values(country.data.languages).map((language)=> <li key={language}>{language}</li>)}
-                </ul>
-                <img src={country.data.flags.png}/>
-                <h2>Weather in {country.data.name}</h2>
-                <p>Temperature </p>
-                <img src=''/>
-                <p>Wind</p>
-                </>
+                <div key={country.data.name.common}>
+                  <h1>{country.data.name.common}</h1>
+                  <p>Capital {country.data.capital[0]} </p>
+                  <p>Area {country.data.area}</p>
+                  <h2>Languages</h2>
+                  <ul>
+                  {Object.values(country.data.languages).map((language)=> <li key={language}>{language}</li>)}
+                  </ul>
+                  <img src={country.data.flags.png}/>
+                  <h2>Weather in {country.data.capital[0]}</h2>
+                  <p>Temperature {(weather.data.main.temp-273.15).toFixed(2)} Celsius</p>
+                  <img src={`https://openweathermap.org/img/wn/${weather.data.weather[0].icon}@2x.png`}/>
+                  <p>Wind {weather.data.wind.speed} m/s</p>
+                </div>
             )
+          })
+        
         })
     }
 
